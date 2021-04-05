@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Department extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+    public function users() {
+        return $this->belongsToMany(User::class, 'user_departments', 'department_id', 'user_id');
+    }
 }

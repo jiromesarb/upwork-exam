@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
+
 use App\Models\Department;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,9 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        //
+        $departments = Department::orderBy('id', 'desc')->paginate(10);
+
+        return view('pages.departments.index', compact('departments'));
     }
 
     /**
@@ -24,7 +28,7 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.departments.create');
     }
 
     /**
@@ -35,7 +39,26 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $v = Validator::make($request->all(), [
+            'name' => 'required|unique:departments,name',
+        ]);
+		if ($v->fails()) return back()->withInput()->withErrors($v->errors());
+
+        // Store Employee
+        if (Department::create($request->all())) {
+            return back()->with([
+                'notif.style' => 'success',
+                'notif.icon' => 'plus-circle',
+                'notif.message' => 'Insert successfully!',
+            ]);
+        }
+        else {
+            return back()->withInput()->with([
+                'notif.style' => 'danger',
+                'notif.icon' => 'times-circle',
+                'notif.message' => 'Failed to Insert',
+            ]);
+        }
     }
 
     /**
@@ -46,7 +69,7 @@ class DepartmentController extends Controller
      */
     public function show(Department $department)
     {
-        //
+        return view('pages.departments.show', compact('department'));
     }
 
     /**
@@ -57,7 +80,7 @@ class DepartmentController extends Controller
      */
     public function edit(Department $department)
     {
-        //
+        return view('pages.departments.edit', compact('department'));
     }
 
     /**
@@ -69,7 +92,25 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Department $department)
     {
-        //
+        $v = Validator::make($request->all(), [
+            'name' => 'required|unique:departments,name,' . $department->id,
+        ]);
+        if ($v->fails()) return back()->withInput()->withErrors($v->errors());
+
+        if ($department->update($request->all())) {
+            return back()->with([
+                'notif.style' => 'success',
+                'notif.icon' => 'plus-circle',
+                'notif.message' => 'Updated successfully!',
+            ]);
+        }
+        else {
+            return back()->withInput()->with([
+                'notif.style' => 'danger',
+                'notif.icon' => 'times-circle',
+                'notif.message' => 'Failed to Insert',
+            ]);
+        }
     }
 
     /**
@@ -80,6 +121,19 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
-        //
+        if ($department->delete()) {
+            return back()->with([
+                'notif.style' => 'success',
+                'notif.icon' => 'plus-circle',
+                'notif.message' => 'Deleted successful!',
+            ]);
+        }
+        else {
+            return back()->with([
+                'notif.style' => 'danger',
+                'notif.icon' => 'times-circle',
+                'notif.message' => 'Failed to Delete',
+            ]);
+        }
     }
 }

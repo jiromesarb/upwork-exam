@@ -23,7 +23,8 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('position_id');
 
             $table->rememberToken();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
 
             $table->foreign('position_id')->references('id')->on('positions')->onUpdate('CASCADE')->onDelete('CASCADE');
         });

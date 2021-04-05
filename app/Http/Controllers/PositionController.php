@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
+
 use App\Models\Position;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,9 @@ class PositionController extends Controller
      */
     public function index()
     {
-        //
+        $positions = Position::orderBy('id', 'desc')->paginate(10);
+
+        return view('pages.positions.index', compact('positions'));
     }
 
     /**
@@ -24,7 +28,7 @@ class PositionController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.positions.create');
     }
 
     /**
@@ -35,7 +39,26 @@ class PositionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $v = Validator::make($request->all(), [
+            'name' => 'required|unique:positions,name',
+        ]);
+		if ($v->fails()) return back()->withInput()->withErrors($v->errors());
+
+        // Store Employee
+        if (Position::create($request->all())) {
+            return back()->with([
+                'notif.style' => 'success',
+                'notif.icon' => 'plus-circle',
+                'notif.message' => 'Insert successfully!',
+            ]);
+        }
+        else {
+            return back()->withInput()->with([
+                'notif.style' => 'danger',
+                'notif.icon' => 'times-circle',
+                'notif.message' => 'Failed to Insert',
+            ]);
+        }
     }
 
     /**
@@ -46,7 +69,7 @@ class PositionController extends Controller
      */
     public function show(Position $position)
     {
-        //
+        return view('pages.positions.show', compact('position'));
     }
 
     /**
@@ -57,7 +80,7 @@ class PositionController extends Controller
      */
     public function edit(Position $position)
     {
-        //
+        return view('pages.positions.edit', compact('position'));
     }
 
     /**
@@ -69,7 +92,25 @@ class PositionController extends Controller
      */
     public function update(Request $request, Position $position)
     {
-        //
+        $v = Validator::make($request->all(), [
+            'name' => 'required|unique:positions,name,' . $position->id,
+        ]);
+        if ($v->fails()) return back()->withInput()->withErrors($v->errors());
+
+        if ($position->update($request->all())) {
+            return back()->with([
+                'notif.style' => 'success',
+                'notif.icon' => 'plus-circle',
+                'notif.message' => 'Updated successfully!',
+            ]);
+        }
+        else {
+            return back()->withInput()->with([
+                'notif.style' => 'danger',
+                'notif.icon' => 'times-circle',
+                'notif.message' => 'Failed to Insert',
+            ]);
+        }
     }
 
     /**
@@ -80,6 +121,19 @@ class PositionController extends Controller
      */
     public function destroy(Position $position)
     {
-        //
+        if ($position->delete()) {
+            return back()->with([
+                'notif.style' => 'success',
+                'notif.icon' => 'plus-circle',
+                'notif.message' => 'Deleted successful!',
+            ]);
+        }
+        else {
+            return back()->with([
+                'notif.style' => 'danger',
+                'notif.icon' => 'times-circle',
+                'notif.message' => 'Failed to Delete',
+            ]);
+        }
     }
 }
