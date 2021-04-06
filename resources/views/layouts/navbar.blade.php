@@ -1,4 +1,5 @@
-<nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+<nav class="navbar navbar-expand-md navbar-light navbar-laravel">;
+
     <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">
             {{ config('app.name', 'Laravel') }}
@@ -34,7 +35,7 @@
                     <li class="nav-item {{ request()->segment(1) == 'positions' ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('positions.index') }}">Positions</a>
                     </li>
-                    
+
                     <li class="nav-item {{ request()->segment(1) == 'users' || request()->segment(1) == null ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('users.index') }}">Users Management</a>
                     </li>
@@ -44,11 +45,11 @@
                             {{-- {{ auth()->user()->name }} --}}
                             Sample
                         </a>
-                        {{-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">User Management</a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('profile') }}">Profile</a>
                             <div class="dropdown-divider"></div>
 
-                            <a class="dropdown-item" href="{{ route('logout') }}"
+                            {{-- <a class="dropdown-item" href="{{ route('logout') }}"
                             onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">
                                 {{ __('Logout') }}
@@ -56,8 +57,8 @@
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
-                            </form>
-                        </div> --}}
+                            </form> --}}
+                        </div>
                     </li>
                 {{-- @endguest --}}
 

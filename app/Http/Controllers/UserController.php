@@ -106,9 +106,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        //
+        $positions = Position::latest()->get();
+        $departments = Department::latest()->get();
+        return view('pages.users.edit', compact('user', 'positions', 'departments'));
     }
 
     /**
@@ -118,9 +120,40 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(User $user, Request $request)
     {
-        //
+        $v = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|unique:users,name',
+            'position_id' => 'required',
+            'departments' => 'required',
+        ]);
+        if ($v->fails()) return back()->withInput()->withErrors($v->errors());
+
+        if($user->update($request->except('departments', '_token', '_method'))){
+            UserDepartment::where('user_id', $user->id)->delete();
+
+            $userDepartments = [];
+            foreach($request->departments as $departmentId){
+                $userDepartments[] = [
+                    'user_id' => $user->id,
+                    'department_id' => $departmentId,
+                ];
+            }
+            UserDepartment::insert($userDepartments);
+
+            return back()->with([
+                'notif.style' => 'success',
+                'notif.icon' => 'plus-circle',
+                'notif.message' => 'Updated!',
+            ]);
+        } else {
+            return back()->withInput()->with([
+                'notif.style' => 'danger',
+                'notif.icon' => 'times-circle',
+                'notif.message' => 'Failed to Update',
+            ]);
+        }
     }
 
     /**

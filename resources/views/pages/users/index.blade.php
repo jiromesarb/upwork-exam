@@ -49,14 +49,17 @@
 
                                         <td>
                                             @foreach($user->departments as $departmentIndex => $department)
-                                                {!! $departmentIndex == 0 ? $department['name'] : ", " . $department['name'] !!}
+                                                @php
+                                                $departmentIndex == 0 ? $departments = $department['name'] : $departments .= ", " . $department['name'];
+                                                @endphp
                                             @endforeach
+                                            {!! $departments !!}
                                         </td>
                                         <td class="text-center">
                                             <form action="{{ route('users.destroy', $user['id']) }}" method="post">
                                                 {{ csrf_field() }}
                                                 {{ method_field('delete') }}
-                                                <a href="{{ route('users.show', $user['id']) }}" class="btn btn-md btn-info text-light"><span class="fa fa-eye"></span></a>
+                                                <a href="{{ route('users.edit', $user['id']) }}" class="btn btn-md btn-info text-light"><span class="fa fa-pencil"></span></a>
                                                 <button class="btn btn-md btn-danger"><span class="fa fa-trash"></span></button>
                                             </form>
                                         </td>
