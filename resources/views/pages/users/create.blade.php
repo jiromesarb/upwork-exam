@@ -52,7 +52,7 @@
                                     <label>Position</label>
                                     <select name="position_id" id="" class="form-control select2-tag">
                                         @foreach($positions as $position)
-                                            <option value="{{ $position['id'] }}">{{ $position['name'] }}</option>
+                                            <option {{ !empty(old('position_id')) ? 'selected': null }} value="{{ $position['id'] }}">{{ $position['name'] }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -61,7 +61,11 @@
                                     <label>Departments</label>
                                     <select name="departments[]" id="" class="form-control select2-multiple-tags-strict" multiple>
                                         @foreach($departments as $department)
-                                            <option value="{{ $department['id'] }}">{{ $department['name'] }}</option>
+                                            <option
+                                            @if(!empty(old('departments')))
+                                                {{ in_array($department['id'], old('departments')) ? 'selected' : null }}
+                                            @endif
+                                            value="{{ $department['id'] }}">{{ $department['name'] }}</option>
                                         @endforeach
                                     </select>
                                 </div>

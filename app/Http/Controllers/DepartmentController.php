@@ -16,6 +16,7 @@ class DepartmentController extends Controller
      */
     public function index()
     {
+        $this->authorize('index-departments');
         $departments = Department::orderBy('id', 'desc')->paginate(10);
 
         return view('pages.departments.index', compact('departments'));
@@ -28,6 +29,7 @@ class DepartmentController extends Controller
      */
     public function create()
     {
+        $this->authorize('create-departments');
         return view('pages.departments.create');
     }
 
@@ -39,6 +41,7 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('store-departments');
         $v = Validator::make($request->all(), [
             'name' => 'required|unique:departments,name',
         ]);
@@ -62,17 +65,6 @@ class DepartmentController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Department  $department
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Department $department)
-    {
-        return view('pages.departments.show', compact('department'));
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Department  $department
@@ -80,6 +72,7 @@ class DepartmentController extends Controller
      */
     public function edit(Department $department)
     {
+        $this->authorize('edit-departments');
         return view('pages.departments.edit', compact('department'));
     }
 
@@ -92,6 +85,7 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Department $department)
     {
+        $this->authorize('update-departments');
         $v = Validator::make($request->all(), [
             'name' => 'required|unique:departments,name,' . $department->id,
         ]);
@@ -121,6 +115,7 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
+        $this->authorize('destroy-departments');
         if ($department->delete()) {
             return back()->with([
                 'notif.style' => 'success',

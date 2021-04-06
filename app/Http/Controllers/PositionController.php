@@ -16,6 +16,7 @@ class PositionController extends Controller
      */
     public function index()
     {
+        $this->authorize('index-positions');
         $positions = Position::orderBy('id', 'desc')->paginate(10);
 
         return view('pages.positions.index', compact('positions'));
@@ -28,6 +29,7 @@ class PositionController extends Controller
      */
     public function create()
     {
+        $this->authorize('create-positions');
         return view('pages.positions.create');
     }
 
@@ -39,6 +41,7 @@ class PositionController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('store-positions');
         $v = Validator::make($request->all(), [
             'name' => 'required|unique:positions,name',
         ]);
@@ -62,17 +65,6 @@ class PositionController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Position  $position
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Position $position)
-    {
-        return view('pages.positions.show', compact('position'));
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Position  $position
@@ -80,6 +72,7 @@ class PositionController extends Controller
      */
     public function edit(Position $position)
     {
+        $this->authorize('edit-positions');
         return view('pages.positions.edit', compact('position'));
     }
 
@@ -92,6 +85,7 @@ class PositionController extends Controller
      */
     public function update(Request $request, Position $position)
     {
+        $this->authorize('update-positions');
         $v = Validator::make($request->all(), [
             'name' => 'required|unique:positions,name,' . $position->id,
         ]);
@@ -121,6 +115,7 @@ class PositionController extends Controller
      */
     public function destroy(Position $position)
     {
+        $this->authorize('destroy-positions');
         if ($position->delete()) {
             return back()->with([
                 'notif.style' => 'success',

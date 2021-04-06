@@ -24,7 +24,9 @@
                         </div>
                         <div class="col-md-6 col-5">
                             <div class="float-right">
-                                <a href="{{ route('users.create') }}" class="btn btn-success">Add New User</a>
+                                @can('create-users')
+                                    <a href="{{ route('users.create') }}" class="btn btn-success">Add New User</a>
+                                @endcan
                             </div>
                         </div>
                     </div>
@@ -59,8 +61,12 @@
                                             <form action="{{ route('users.destroy', $user['id']) }}" method="post">
                                                 {{ csrf_field() }}
                                                 {{ method_field('delete') }}
-                                                <a href="{{ route('users.edit', $user['id']) }}" class="btn btn-md btn-info text-light"><span class="fa fa-pencil"></span></a>
-                                                <button class="btn btn-md btn-danger"><span class="fa fa-trash"></span></button>
+                                                @can('edit-users')
+                                                    <a href="{{ route('users.edit', $user['id']) }}" class="btn btn-md btn-info text-light"><span class="fa fa-pencil"></span></a>
+                                                @endcan
+                                                @can('destroy-users')
+                                                    <button class="btn btn-md btn-danger"><span class="fa fa-trash"></span></button>
+                                                @endcan
                                             </form>
                                         </td>
                                     </tr>

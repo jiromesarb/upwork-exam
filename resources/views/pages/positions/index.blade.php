@@ -24,7 +24,9 @@
                         </div>
                         <div class="col-md-6 col-5">
                             <div class="float-right">
-                                <a href="{{ route('positions.create') }}" class="btn btn-success">Add New Position</a>
+                                @can('create-positions')
+                                    <a href="{{ route('positions.create') }}" class="btn btn-success">Add New Position</a>
+                                @endcan
                             </div>
                         </div>
                     </div>
@@ -45,8 +47,12 @@
                                             <form action="{{ route('positions.destroy', $position['id']) }}" method="post">
                                                 {{ csrf_field() }}
                                                 {{ method_field('delete') }}
-                                                <a href="{{ route('positions.edit', $position['id']) }}" class="btn btn-md btn-info text-light"><span class="fa fa-pencil"></span></a>
-                                                <button class="btn btn-md btn-danger"><span class="fa fa-trash"></span></button>
+                                                @can('edit-positions')
+                                                    <a href="{{ route('positions.edit', $position['id']) }}" class="btn btn-md btn-info text-light"><span class="fa fa-pencil"></span></a>
+                                                @endcan
+                                                @can('destroy-positions')
+                                                    <button class="btn btn-md btn-danger"><span class="fa fa-trash"></span></button>
+                                                @endcan
                                             </form>
                                         </td>
                                     </tr>

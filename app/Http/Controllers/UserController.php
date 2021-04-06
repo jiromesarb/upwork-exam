@@ -20,6 +20,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        $this->authorize('index-users');
         $users = User::orderBy('id', 'desc')->with(['position', 'departments'])->paginate(10);
 
         return view('pages.users.index', compact('users'));
@@ -32,6 +33,7 @@ class UserController extends Controller
      */
     public function create()
     {
+        $this->authorize('create-users');
         $positions = Position::latest()->get();
         $departments = Department::latest()->get();
         return view('pages.users.create', compact('positions', 'departments'));
@@ -45,6 +47,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('store-users');
         $v = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|unique:users,name',
@@ -90,17 +93,6 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -108,6 +100,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $this->authorize('edit-users');
         $positions = Position::latest()->get();
         $departments = Department::latest()->get();
         return view('pages.users.edit', compact('user', 'positions', 'departments'));
@@ -122,6 +115,7 @@ class UserController extends Controller
      */
     public function update(User $user, Request $request)
     {
+        $this->authorize('update-users');
         $v = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|unique:users,name',
@@ -162,8 +156,22 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        $this->authorize('destroy-users');
+        if ($user->delete()) {
+            return back()->with([
+                'notif.style' => 'success',
+                'notif.icon' => 'plus-circle',
+                'notif.message' => 'Deleted successful!',
+            ]);
+        }
+        else {
+            return back()->with([
+                'notif.style' => 'danger',
+                'notif.icon' => 'times-circle',
+                'notif.message' => 'Failed to Delete',
+            ]);
+        }
     }
 }
