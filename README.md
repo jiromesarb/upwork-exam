@@ -1,3 +1,26 @@
+## Installation
+* Install Laravel
+```
+composer update
+```
+
+* Setup .env
+
+* Migrate database
+```
+php artisan migrate
+```
+
+* Add Seeder
+```
+php artisan db:seed
+```
+
+* Login in localhost:8000
+Email: admin@admin.com
+Password: P@ssword123
+
+
 ## Upwork Exam from Svetlana Patskova
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>

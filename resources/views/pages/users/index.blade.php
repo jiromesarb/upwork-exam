@@ -13,7 +13,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
+            <div class="card border-0">
                 <div class="card-body">
                     {{ csrf_field() }}
                     <div class="row">
@@ -40,16 +40,24 @@
                                     <th>Email</th>
                                     <th>Position</th>
                                     <th>Departments</th>
+                                    <th>Role</th>
                                     <th class="text-center" width="10%"></th>
                                 </thead>
                                 <tbody>
                                     @foreach($users as $user)
-                                    <tr>
-                                        <td>{{ $user['name'] }}</td>
-                                        <td>{!! $user['email'] !!}</td>
-                                        <td>{!! $user['position']['name'] !!}</td>
-
+                                    <tr class="align-middle">
                                         <td>
+                                            @if ($user->profile)
+                                                <img src="{{ '/assets/images/users/' . $user->profile }}" alt="AppDev Team" class="img-profile-lg rounded-circle mr-2">
+                                            @else
+                                                <img src="{{ '/assets/images/users/noimg.jpg' }}" alt="AppDev Team" class="img-profile-lg rounded-circle mr-2">
+                                            @endif
+                                            {{ $user['name'] }}
+                                        </td>
+                                        <td class="align-middle">{!! $user['email'] !!}</td>
+                                        <td class="align-middle">{!! $user['position']['name'] !!}</td>
+
+                                        <td class="align-middle">
                                             @foreach($user->departments as $departmentIndex => $department)
                                                 @php
                                                 $departmentIndex == 0 ? $departments = $department['name'] : $departments .= ", " . $department['name'];
@@ -57,7 +65,8 @@
                                             @endforeach
                                             {!! $departments !!}
                                         </td>
-                                        <td class="text-center">
+                                        <td class="align-middle">{!! ucwords($user['role']) !!}</td>
+                                        <td class="text-center align-middle">
                                             <form action="{{ route('users.destroy', $user['id']) }}" method="post">
                                                 {{ csrf_field() }}
                                                 {{ method_field('delete') }}

@@ -9,6 +9,7 @@ use App\Models\Position;
 use App\Models\User;
 use App\Models\UserDepartment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Image;
 use Storage;
 
@@ -81,5 +82,52 @@ class ProfileController extends Controller
                 'notif.message' => 'Failed to Update',
             ]);
         }
+    }
+
+    public function changePassword(){
+        return view('pages.profile.change-password');
+    }
+
+    public function updatePassword(Request $request){
+        $v = Validator::make($request->all(), [
+            'old_password' => 'required',
+            'new_password' => 'required',
+            'confirm_password' => 'required',
+        ]);
+        if ($v->fails()) return back()->withInput()->withErrors($v->errors());
+
+        if($request->new_password != $request->confirm_password){
+            return back()->withInput()->with([
+                'notif.style' => 'danger',
+                'notif.icon' => 'times-circle',
+                'notif.message' => "New password and confirm password doesn't match!",
+            ]);
+        }
+
+        if($request->old_password == $request->new_password){
+            return back()->withInput()->with([
+                'notif.style' => 'danger',
+                'notif.icon' => 'times-circle',
+                'notif.message' => "The new password and old password can't be the same!",
+            ]);
+        }
+
+        if (!Hash::check($request->old_password, auth()->user()->password)) {
+            return back()->withInput()->with([
+                'notif.style' => 'danger',
+                'notif.icon' => 'times-circle',
+                'notif.message' => "The old password you enter is invalid!",
+            ]);
+        }
+
+        User::where('id', auth()->user()->id)->update(['password' => Hash::make($request->new_password)]);
+
+        return redirect()->route('profile')->with([
+            'notif.style' => 'success',
+            'notif.icon' => 'plus-circle',
+            'notif.message' => 'Password Updated!',
+        ]);
+
+        return 'sad';
     }
 }

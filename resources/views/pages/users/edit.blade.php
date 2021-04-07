@@ -16,7 +16,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
+            <div class="card border-0">
                 <div class="card-body">
 
                     <div class="row">
@@ -48,7 +48,25 @@
                                 <div class="form-group">
                                     <label>Email</label>
                                     <input type="email" name="email" class="form-control" value="{{ !empty(old('email')) ? old('email') : $user['email'] }}">
+                                </div>
 
+                                <div class="form-group">
+                                    <label>Role</label>
+                                    <select name="role" id="" class="form-control select2-tag">
+                                        @foreach($roles as $role)
+                                            <option
+                                            @if(!empty(old('role')))
+                                                {{ $role == old('role') ? 'selected' : null }}
+                                            @else
+                                                @if(!empty($user->role))
+                                                    @if($user->role == $role)
+                                                        selected
+                                                    @endif
+                                                @endif
+                                            @endif
+                                            value="{{ $role }}">{{ ucwords($role) }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
 
                                 <div class="form-group">
@@ -106,6 +124,17 @@
                                 </div>
 
                             </form>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <h6 class="mb-0">Created At:</h6>
+                                <h5>{{ $user->created_at->format('d.m.Y') }}</h5>
+                            </div>
+                            <div class="form-group">
+                                <h6 class="mb-0">Last Modified:</h6>
+                                <h5>{{ $user->updated_at->format('d.m.Y') }}</h5>
+                            </div>
                         </div>
                     </div>
 

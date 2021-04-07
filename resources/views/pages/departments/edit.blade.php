@@ -16,7 +16,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
+            <div class="card border-0">
                 <div class="card-body">
 
                     <div class="row">
@@ -51,6 +51,17 @@
                                 </div>
 
                             </form>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <h6 class="mb-0">Created At:</h6>
+                                <h5>{{ $department->created_at->format('d.m.Y') }}</h5>
+                            </div>
+                            <div class="form-group">
+                                <h6 class="mb-0">Last Modified:</h6>
+                                <h5>{{ $department->updated_at->format('d.m.Y') }}</h5>
+                            </div>
                         </div>
                     </div>
 

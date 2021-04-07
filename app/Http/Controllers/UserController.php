@@ -34,9 +34,11 @@ class UserController extends Controller
     public function create()
     {
         $this->authorize('create-users');
+
+        $roles = [ 'admin', 'manager', 'user' ];
         $positions = Position::latest()->get();
         $departments = Department::latest()->get();
-        return view('pages.users.create', compact('positions', 'departments'));
+        return view('pages.users.create', compact('positions', 'departments', 'roles'));
     }
 
     /**
@@ -101,9 +103,11 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $this->authorize('edit-users');
+
+        $roles = [ 'admin', 'manager', 'user' ];
         $positions = Position::latest()->get();
         $departments = Department::latest()->get();
-        return view('pages.users.edit', compact('user', 'positions', 'departments'));
+        return view('pages.users.edit', compact('user', 'positions', 'departments', 'roles'));
     }
 
     /**

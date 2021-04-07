@@ -15,7 +15,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
+            <div class="card border-0">
                 <div class="card-body">
 
                     <div class="row">
@@ -49,10 +49,27 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label>Role</label>
+                                    <select name="role" id="" class="form-control select2-tag">
+                                        @foreach($roles as $role)
+                                            <option
+                                            @if(!empty(old('role')))
+                                                {{ $role == old('role') ? 'selected' : null }}
+                                            @endif
+                                            value="{{ $role }}">{{ ucwords($role) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
                                     <label>Position</label>
                                     <select name="position_id" id="" class="form-control select2-tag">
                                         @foreach($positions as $position)
-                                            <option {{ !empty(old('position_id')) ? 'selected': null }} value="{{ $position['id'] }}">{{ $position['name'] }}</option>
+                                            <option
+                                            @if(!empty(old('position_id')))
+                                                {{ $position['id'] == old('position_id') ? 'selected' : null }}
+                                            @endif
+                                            value="{{ $position['id'] }}">{{ $position['name'] }}</option>
                                         @endforeach
                                     </select>
                                 </div>

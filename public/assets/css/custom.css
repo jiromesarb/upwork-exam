@@ -3,7 +3,18 @@
 /* } */
 
 .dropdown-toggle:after { content: none }
+.dropdown-menu-right{right:0;left:auto} 
 
 /* .dropdown-menu {
     left: 0 !important;
 } */
+
+.img-profile {
+  height: 2rem;
+  width: 2rem;
+}
+
+.img-profile-lg {
+  height: 3rem;
+  width: 3rem;
+}

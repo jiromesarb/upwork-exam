@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+<nav class="navbar navbar-expand-md navbar-light navbar-laravel Regular shadow">
 
     <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">
@@ -15,7 +15,7 @@
             </ul>
 
             <!-- Right Side Of Navbar -->
-            <ul class="navbar-nav ml-auto">
+            <ul class="navbar-nav ml-auto d-flex align-items-center">
 
 
                 @guest
@@ -37,16 +37,19 @@
                     </li>
 
                     <li class="nav-item {{ request()->segment(1) == 'users' || request()->segment(1) == null ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('users.index') }}">Users Management</a>
+                        <a class="nav-link align-middle" href="{{ route('users.index') }}">Users Management</a>
                     </li>
 
-                    <li class="nav-item">
+                    <li class="nav-item dropdown align-middle">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{-- {{ auth()->user()->name }} --}}
-                            Sample
+                            {{ auth()->user()->name }}
+                            <img src="{{ '/assets/images/users/' . auth()->user()->profile }}" alt="AppDev Team" class="img-profile rounded-circle mr-2">
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('profile') }}">Profile</a>
+                        <div class="dropdown-menu text-center" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item " href="{{ route('profile') }}">
+                                Profile
+                            </a>
                             <div class="dropdown-divider"></div>
 
                             <a class="dropdown-item" href="{{ route('logout') }}"

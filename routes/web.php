@@ -32,7 +32,9 @@ Route::group(['middleware' => ['auth']], function(){
 
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/change-password', [ProfileController::class, 'changePassword'])->name('profile.change-password');
     Route::put('/profile/{id}', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/{id}/change-password', [ProfileController::class, 'updatePassword'])->name('profile.update-password');
 });
 
 Auth::routes(['register' => false, 'reset' => false]);
